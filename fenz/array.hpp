@@ -126,9 +126,6 @@ namespace fenz
         T ownedData_[N];
 
     public:
-        /// @brief Default constructor.
-        Array();
-
         /// @brief Constructs an Array with a default value for all elements.
         /// @param defaultValue The default value to initialize all elements of the array.
         Array(T defaultValue);
@@ -235,12 +232,6 @@ namespace fenz
         static_assert(End > Start, "Size must be positive");
 
         return ConstIterable<T, End - Start>(data_ + Start);
-    }
-
-    template <typename T, int N>
-    inline Array<T, N>::Array()
-        : Iterable<T, N>(ownedData_)
-    {
     }
 
     template <typename T, int N>
