@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FENZ_ARRAY_HPP
+#define FENZ_ARRAY_HPP
 
 namespace fenz
 {
@@ -111,3 +112,5 @@ namespace fenz
     };
 
 }
+
+#endif // FENZ_ARRAY_HPP
