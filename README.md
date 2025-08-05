@@ -1,3 +1,7 @@
+# Fenz
+
+A set of single-header c++ libraries made for maximum safety while still being performant.
+
 ## Array (fenz/array.hpp)
 
 This library provides a set of C++ classes for working with fixed-size arrays and non-owning views over array data. It is header-only and designed for performance and safety.
