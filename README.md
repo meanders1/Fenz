@@ -195,4 +195,4 @@ All methods are documented in the header file.
 
 ## License
 
-Distributed under the terms of the GNU General Public License v3. See [LICENSE](LICENSE)
+Distributed under the terms of the MIT License. See [LICENSE](LICENSE)
