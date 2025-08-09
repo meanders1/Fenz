@@ -14,6 +14,9 @@ namespace fenz
     {
         static_assert(N > 0, "Array size must be greater than zero");
 
+        template <typename, int>
+        friend class ConstIterable;
+
     private:
         // A pointer to the first element of the array.
         const T *data_;
@@ -35,8 +38,18 @@ namespace fenz
         const T &at() const;
 
         /// @brief Performs a const operation on each element of the array.
-        /// @param func Function pointer to the const operation to perform on each element. The parameters to the function are the element and its index.
-        void enumerate(void (*func)(const T &, int)) const;
+        /// @param func A callable to the const operation to perform on each element. The parameters to the function are `(const T &, int)` — the element and its index.
+        template <typename Func>
+        void enumerate(Func func) const;
+
+        /// @brief Runs `func` on elements in `other` and `this` in parallel.
+        /// @details For each index `i` from `0` to `N-1`, the function calls `func`.
+        /// @tparam U The element type of the other iterable.
+        /// @param other The other iterable to iterate over in parallel with this one.
+        /// @param func A callable taking `(const T&, const U&)` —
+        ///      the element from this iterable and the element from `other`.
+        template <typename U, typename Func>
+        void zip(const ConstIterable<U, N> &other, Func func) const;
 
         // Range-based for support
         const T *begin() const { return data_; }
@@ -59,6 +72,9 @@ namespace fenz
     class Iterable
     {
         static_assert(N > 0, "Array size must be greater than zero");
+
+        template <typename, int>
+        friend class Iterable;
 
     private:
         // A pointer to the first element of the array.
@@ -83,12 +99,32 @@ namespace fenz
         const T &at() const;
 
         /// @brief Performs an operation on each element of the array.
-        /// @param func Function pointer to the operation to perform on each element. The parameters to the function are the element and its index.
-        void enumerate(void (*func)(T &, int));
+        /// @param func A callable that is the operation to perform on each element. The parameters to the function are `(const T&, int)` — the element and its index.
+        template <typename Func>
+        void enumerate(Func func);
 
         /// @brief Performs a const operation on each element of the array.
-        /// @param func Function pointer to the const operation to perform on each element. The parameters to the function are the element and its index.
-        void enumerate(void (*func)(const T &, int)) const;
+        /// @param func A callable that is the const operation to perform on each element. The parameters to the function are `(const T&, int)` — the element and its index.
+        template <typename Func>
+        void enumerate(Func func) const;
+
+        /// @brief Runs `func` on elements in `other` and `this` in parallel.
+        /// @details For each index `i` from `0` to `N-1`, the function calls `func`.
+        /// @tparam U The element type of the other iterable.
+        /// @param other The other iterable to iterate over in parallel with this one.
+        /// @param func A callable taking `(T&, U&)` —
+        ///      the element from this iterable and the element from `other`.
+        template <typename U, typename Func>
+        void zip(Iterable<U, N> &other, Func func);
+
+        /// @brief Runs `func` on elements in `other` and `this` in parallel.
+        /// @details For each index `i` from `0` to `N-1`, the function calls `func`.
+        /// @tparam U The element type of the other iterable.
+        /// @param other The other iterable to iterate over in parallel with this one.
+        /// @param func A callable taking `(const T&, const U&)` —
+        ///      the element from this iterable and the element from `other`.
+        template <typename U, typename Func>
+        void zip(const Iterable<U, N> &other, Func func) const;
 
         // Range-based for support
         T *begin() { return data_; }
@@ -157,11 +193,22 @@ namespace fenz
     }
 
     template <typename T, int N>
-    inline void ConstIterable<T, N>::enumerate(void (*func)(const T &, int)) const
+    template <typename Func>
+    inline void ConstIterable<T, N>::enumerate(Func func) const
     {
         for (int i = 0; i < N; ++i)
         {
             func(data_[i], i);
+        }
+    }
+
+    template <typename T, int N>
+    template <typename U, typename Func>
+    inline void fenz::ConstIterable<T, N>::zip(const ConstIterable<U, N> &other, Func func) const
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            func(data_[i], other.data_[i], i);
         }
     }
 
@@ -197,7 +244,8 @@ namespace fenz
     }
 
     template <typename T, int N>
-    inline void Iterable<T, N>::enumerate(void (*func)(T &, int))
+    template <typename Func>
+    inline void Iterable<T, N>::enumerate(Func func)
     {
         for (int i = 0; i < N; ++i)
         {
@@ -206,11 +254,32 @@ namespace fenz
     }
 
     template <typename T, int N>
-    inline void Iterable<T, N>::enumerate(void (*func)(const T &, int)) const
+    template <typename Func>
+    inline void Iterable<T, N>::enumerate(Func func) const
     {
         for (int i = 0; i < N; ++i)
         {
             func(data_[i], i);
+        }
+    }
+
+    template <typename T, int N>
+    template <typename U, typename Func>
+    inline void fenz::Iterable<T, N>::zip(Iterable<U, N> &other, Func func)
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            func(data_[i], other.data_[i]);
+        }
+    }
+
+    template <typename T, int N>
+    template <typename U, typename Func>
+    inline void fenz::Iterable<T, N>::zip(const Iterable<U, N> &other, Func func) const
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            func(data_[i], other.data_[i]);
         }
     }
 
