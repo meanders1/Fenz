@@ -68,6 +68,75 @@ See [fenz/array.hpp](fenz/array.hpp) for full documentation of:
 - [`fenz::Iterable`](fenz/array.hpp)
 - [`fenz::ConstIterable`](fenz/array.hpp)
 
+## Time (fenz/time.hpp)
+
+This header-only library provides types and utilities for safe, efficient time handling in C++. It is designed for performance and clarity, with strong type safety and Doxygen-style documentation.
+
+### Overview
+
+- **fenzTimeSource**: A user-defined function returning the current time in milliseconds since an arbitrary start. **Must be defined by the user for the library to work.**
+- **fenz::Duration**: Represents a time duration in milliseconds. Supports conversion to seconds, arithmetic, and comparison.
+- **fenz::Moment**: Represents a point in time (in milliseconds, as defined by `fenzTimeSource`). Supports arithmetic and comparison with `Duration` and other `Moment` objects.
+
+### Usage
+
+Include the header:
+
+```cpp
+#include "fenz/time.hpp"
+```
+
+Define the time source (example using `<chrono>`):
+
+```cpp
+#include <chrono>
+
+long long fenzTimeSource() {
+        auto now = std::chrono::system_clock::now();
+        auto duration_since_epoch = now.time_since_epoch();
+        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration_since_epoch).count();
+        return milliseconds;
+}
+```
+
+Create and use durations:
+
+```cpp
+fenz::Duration d1 = fenz::Duration::fromMillis(500);
+fenz::Duration d2 = fenz::Duration::fromSeconds(2.5);
+auto total = d1 + d2;
+double seconds = total.seconds();
+```
+
+Work with moments:
+
+```cpp
+fenz::Moment start = fenz::Moment::now();
+// ... do work ...
+fenz::Moment end = fenz::Moment::now();
+fenz::Duration elapsed = end - start;
+if (elapsed > fenz::Duration::fromSeconds(1.0)) {
+        // More than 1 second has passed
+}
+```
+
+### API Reference
+
+See [fenz/time.hpp](fenz/time.hpp) for full documentation of:
+
+- [`fenzTimeSource`](fenz/time.hpp): User-defined function returning the current time in milliseconds.
+- [`fenz::Duration`](fenz/time.hpp):
+  - `fromMillis(long long ms)`: Create from milliseconds.
+  - `fromSeconds(double sec)`: Create from seconds.
+  - `millis()`: Get milliseconds.
+  - `seconds()`: Get seconds as double.
+  - Arithmetic and comparison operators.
+- [`fenz::Moment`](fenz/time.hpp):
+  - `now()`: Get the current moment.
+  - Arithmetic and comparison with `Duration` and other `Moment` objects.
+
+All operators and methods are documented in the header file.
+
 ## License
 
 Distributed under the terms of the GNU General Public License v3. See [LICENSE](LICENSE)
