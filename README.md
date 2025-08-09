@@ -137,6 +137,62 @@ See [fenz/time.hpp](fenz/time.hpp) for full documentation of:
 
 All operators and methods are documented in the header file.
 
+## Option (fenz/Option.hpp)
+
+This header-only library provides a simple, type-safe optional value container for C++. It allows you to represent values that may or may not be present, similar to `std::optional` (C++17+), but without the risk of exceptions.
+
+### Overview
+
+- **fenz::Option<T>**: A template class that can either contain a value of type `T` or represent the absence of a value.
+  - Provides methods to check for presence, retrieve the value, or supply a fallback.
+  - Supports copy construction, assignment, and implicit conversion to `bool`.
+
+### Usage
+
+Include the header:
+
+```cpp
+#include "fenz/Option.hpp"
+```
+
+Create and use an Option:
+
+```cpp
+fenz::Option<int> maybeValue; // No value
+if (!maybeValue) {
+    maybeValue = 42;
+}
+
+if (maybeValue.hasValue()) {
+    int value = maybeValue.valueOr(0); // value == 42
+}
+
+int fallback = maybeValue.valueOr(100); // returns 42 if present, otherwise 100
+```
+
+Assign a fallback if none is present:
+
+```cpp
+fenz::Option<std::string> maybeName;
+std::string& name = maybeName.valueOrAssign("default"); // assigns and returns "default"
+```
+
+### API Reference
+
+See [fenz/Option.hpp](fenz/Option.hpp) for full documentation of:
+
+- [`fenz::Option<T>`](fenz/Option.hpp):
+  - `Option()`: Constructs an empty Option (no value).
+  - `Option(T value)`: Constructs an Option containing a value.
+  - `Option(const Option&)`: Copy constructor.
+  - `operator=(const Option&)`: Assignment operator.
+  - `hasValue()`: Returns true if a value is present.
+  - `operator bool()`: Implicit conversion to bool (true if value is present).
+  - `valueOrAssign(const T&)`: Returns the value if present, otherwise assigns and returns the fallback.
+  - `valueOr(const T&) const`: Returns the value if present, otherwise returns the fallback.
+
+All methods are documented in the header file.
+
 ## License
 
 Distributed under the terms of the GNU General Public License v3. See [LICENSE](LICENSE)
