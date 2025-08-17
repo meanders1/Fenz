@@ -40,11 +40,27 @@ namespace fenz
             }
         }
 
+        /// @brief Destructor. If a value is present, it's destructor is called.
+        ~Option()
+        {
+            if (hasValue())
+            {
+                value_.~T();
+                hasValue_ = false;
+            }
+        }
+
         /// @brief Assignment operator. Copies the value of `other`.
+        /// @note If this value already has a value, it is destroyed.
         /// @param other The Option to assign from.
         /// @return Reference to this Option.
         Option &operator=(const Option &other)
         {
+            if (hasValue())
+            {
+                value_.~T();
+            }
+
             if (other.hasValue())
             {
                 hasValue_ = true;
