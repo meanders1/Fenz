@@ -193,6 +193,78 @@ See [fenz/Option.hpp](fenz/Option.hpp) for full documentation of:
 
 All methods are documented in the header file.
 
+## Queue (fenz/queue.hpp)
+
+This header-only library provides a simple, fixed-capacity circular queue for C++. It is designed for safety and performance, with no dynamic memory allocation and strong type guarantees.
+
+### Features
+
+- Fixed-size circular buffer implementation.
+- Efficient enqueue and dequeue operations.
+- Uses `fenz::Option` for safe value handling (no exceptions).
+
+### Overview
+
+- **Queue**: Template class with type and capacity parameters. Supports adding, removing, and inspecting items.
+
+### Usage
+
+Include the header:
+
+```cpp
+#include "fenz/queue.hpp"
+```
+
+Create a queue:
+
+```cpp
+fenz::Queue<int, 8> q; // Queue of 8 ints
+```
+
+Add items:
+
+```cpp
+q.enqueue(42); // Adds 42, returns true if successful, returns false if full
+```
+
+Force add (overwrite oldest if full):
+
+```cpp
+q.forceEnqueue(99); // Adds 99, overwrites oldest if full
+```
+
+Dequeue items:
+
+```cpp
+Option<int> item = q.dequeue();
+if (item) {
+    int value = item.valueOr(0); // Get value, fallback to 0 if empty
+}
+```
+
+Check status:
+
+```cpp
+if (q.isFull()) { /* ... */ }
+if (q.isEmpty()) { /* ... */ }
+unsigned int n = q.size();
+```
+
+### API Reference
+
+See queue.hpp for full documentation of:
+
+- `fenz::Queue<T, Capacity>`:
+  - `enqueue(const T&)`: Adds item, returns true if successful.
+  - `forceEnqueue(const T&)`: Adds item, overwrites oldest if full.
+  - `dequeue()`: Removes and returns item as `Option<T>`.
+  - `size()`: Returns current number of items.
+  - `capacity()`: Returns maximum capacity.
+  - `isFull()`: Checks if queue is full.
+  - `isEmpty()`: Checks if queue is empty.
+
+All methods are documented in the header file.
+
 ## License
 
 Distributed under the terms of the MIT License. See [LICENSE](LICENSE)
