@@ -152,7 +152,7 @@ This header-only library provides a simple, type-safe optional value container f
 Include the header:
 
 ```cpp
-#include "fenz/Option.hpp"
+#include "fenz/option.hpp"
 ```
 
 Create and use an Option:
@@ -179,9 +179,9 @@ std::string& name = maybeName.valueOrAssign("default"); // assigns and returns "
 
 ### API Reference
 
-See [fenz/Option.hpp](fenz/Option.hpp) for full documentation of:
+See [fenz/option.hpp](fenz/option.hpp) for full documentation of:
 
-- [`fenz::Option<T>`](fenz/Option.hpp):
+- [`fenz::Option<T>`](fenz/option.hpp):
   - `Option()`: Constructs an empty Option (no value).
   - `Option(T value)`: Constructs an Option containing a value.
   - `Option(const Option&)`: Copy constructor.
