@@ -1,6 +1,6 @@
 # Fenz
 
-A set of single-header c++ libraries made for maximum safety while still being performant.
+A set of c++ libraries made for maximum safety while still being performant.
 
 ## Array (fenz/array.hpp)
 
@@ -196,6 +196,10 @@ All methods are documented in the header file.
 ## Queue (fenz/queue.hpp)
 
 This header-only library provides a simple, fixed-capacity circular queue for C++. It is designed for safety and performance, with no dynamic memory allocation and strong type guarantees.
+
+### Dependencies
+
+- [Option](#option-fenzoptionhpp). You must also have `option.hpp` in the same directory as `queue.hpp` in order for `queue.hpp` to compile.
 
 ### Features
 
