@@ -62,6 +62,21 @@ namespace fenz
             return item;
         }
 
+        /// @brief Dequeues all items from the queue, calling the provided function for each item.
+        /// @param func The function to call for each item. This function should take a single argument of type that this queue holds.
+        template <typename Func>
+        void dequeueAll(Func func)
+        {
+            while (!isEmpty())
+            {
+                Option<T> item = dequeue();
+                if (item.hasValue())
+                {
+                    func(item.value_unsafely());
+                }
+            }
+        }
+
         /// @brief Returns the number of elements in the queue.
         /// @return The number of elements in the queue.
         constexpr unsigned int size() const
