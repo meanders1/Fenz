@@ -177,6 +177,13 @@ fenz::Option<std::string> maybeName;
 std::string& name = maybeName.valueOrAssign("default"); // assigns and returns "default"
 ```
 
+Unsafe access is clearly marked:
+
+```cpp
+// Access the value directly (unsafe, only if you know it's present):
+int value = maybeValue.value_unsafely();
+```
+
 ### API Reference
 
 See [fenz/option.hpp](fenz/option.hpp) for full documentation of:
@@ -190,6 +197,7 @@ See [fenz/option.hpp](fenz/option.hpp) for full documentation of:
   - `operator bool()`: Implicit conversion to bool (true if value is present).
   - `valueOrAssign(const T&)`: Returns the value if present, otherwise assigns and returns the fallback.
   - `valueOr(const T&) const`: Returns the value if present, otherwise returns the fallback.
+  - `value_unsafely()`: Returns the contained value without checking if present (undefined behavior if empty).
 
 All methods are documented in the header file.
 

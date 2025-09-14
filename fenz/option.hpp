@@ -108,6 +108,20 @@ namespace fenz
             else
                 return ifNone;
         }
+
+        /// @brief Returns the contained value.
+        /// @note Calling this when no value is present results in undefined behavior.
+        T &value_unsafely()
+        {
+            return value_;
+        }
+
+        /// @brief Returns the contained value.
+        /// @note Calling this when no value is present results in undefined behavior.
+        const T &value_unsafely() const
+        {
+            return value_;
+        }
     };
 
 }
